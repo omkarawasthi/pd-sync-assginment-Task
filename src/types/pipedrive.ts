@@ -8,6 +8,12 @@ export interface PipedriveOwner {
   value: number;
 }
 
+export interface PipedriveContactInfo {
+  label?: string; // Made optional to match usage in objectUtils.ts
+  value: string;
+  primary: boolean;
+}
+
 export interface PipedrivePersonOrganization {
   name: string;
   people_count: number;
@@ -18,12 +24,6 @@ export interface PipedrivePersonOrganization {
   cc_email: string;
   owner_name: string;
   value: number;
-}
-
-export interface PipedriveContactInfo {
-  label: string;
-  value: string;
-  primary: boolean;
 }
 
 export interface PipedrivePerson {
@@ -51,11 +51,8 @@ export interface PipedrivePerson {
   lost_deals_count: number;
   related_lost_deals_count: number;
   active_flag: boolean;
-  phone: PipedriveContactInfo[];
-  email: PipedriveContactInfo[];
   first_char: string;
   update_time: string;
-  delete_time: string | null;
   add_time: string;
   visible_to: string;
   picture_id: string | null;
@@ -92,4 +89,37 @@ export interface PipedrivePerson {
   company_id: number;
   // Allow additional string keys for custom fields (like the hash-named fields in the JSON)
   [key: string]: any;
+}
+
+// Simplified InputData interface - using Record<string, any> instead of complex nested interfaces
+export interface InputData {
+  [key: string]: any;
+}
+
+// Define type for mapping configuration
+export interface FieldMapping {
+  pipedriveKey: string;
+  inputKey: string;
+}
+
+// Define types for Pipedrive person data structure
+export interface PipedrivePersonData {
+  name?: string;
+  email?: PipedriveContactInfo[];
+  phone?: PipedriveContactInfo[];
+  [key: string]: any; // Allow additional string keys for custom fields
+}
+
+export interface PipedriveCreateUpdateResponse {
+    success: boolean;
+    data: PipedrivePerson;
+}
+
+export interface PipedriveSearchResponse {
+    success: boolean;
+    data: {
+        items: Array<{
+            item: PipedrivePerson;
+        }>;
+    };
 }
